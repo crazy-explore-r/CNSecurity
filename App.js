@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Body from "./components/Body"
+import React, { useState } from 'react';
+import * as Font from "expo-font";
+import AppLoading from 'expo-app-loading';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const fetchFonts = () => {
+  return Font.loadAsync({
+    "rocker": require("./assets/fonts/RubikMoonrocks-Regular.ttf")
+  })
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  const [fontLoaded, setFontLoaded] = useState(false);
+
+  if (!fontLoaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onError={(err) => console.log(err)}
+        onFinish={() => setFontLoaded(true)}
+      />
+    )
+  }
+
+  return <Body />;
+}
+
+
